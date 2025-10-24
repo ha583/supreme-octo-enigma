@@ -2,15 +2,19 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { hostname: "avatar.vercel.sh", port: "", protocol: "https" },
-      { hostname: "utfs.io", port: "", protocol: "https" },
-      { hostname: "lh3.googleusercontent.com", port: "", protocol: "https" },
+      // Allow all HTTPS domains
       {
-        hostname: "avatars.githubusercontent.com",
-        port: "",
         protocol: "https",
+        hostname: "**",
+      },
+      // Allow all HTTP domains (for development)
+      {
+        protocol: "http",
+        hostname: "**",
       },
     ],
+    dangerouslyAllowSVG: true,
+    unoptimized: false,
   },
 };
 

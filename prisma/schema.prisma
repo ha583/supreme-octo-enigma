@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime       @updatedAt
   Availability  Availability[]
   EventType     EventType[]
+  Organization  Organization[]
 }
 
 model Account {
@@ -102,4 +103,110 @@ model EventType {
   userId String
 
   createdAt DateTime @default(now())
+}
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  displayName String?  // Brand or display name
+  tagline     String?
+  description String?
+  logo        String?
+  coverImage  String?
+  website     String?
+  location    String?
+  teamSize    String?  // e.g., "1-10", "11-50"
+  phone       String?
+  country     String?
+  currency    String?  @default("USD")
+  socialLinks Json?    @default("{}")
+  isPublished Boolean  @default(false)
+  slug        String?  @unique
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  projects Project[]
+  services Service[]
+  clients  Client[]
+  reviews  Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([slug])
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  title          String
+  description    String?
+  coverImage     String?
+  images         Json?    @default("[]")
+  tags           Json?    @default("[]")
+  date           String?
+  isPinned       Boolean  @default(false)
+  isFeatured     Boolean  @default(false)
+  projectUrl     String?
+  order          Int      @default(0)
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+}
+
+model Service {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  icon         String?
+  logo         String?
+  banner       String?
+  pricePerHour Decimal? @db.Decimal(10, 2)
+  sampleWork   Json?    @default("[]") // Array of sample work objects
+  order        Int      @default(0)
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+}
+
+model Client {
+  id    String @id @default(uuid())
+  name  String
+  logo  String?
+  order Int    @default(0)
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
+}
+
+model Review {
+  id            String  @id @default(uuid())
+  authorName    String
+  authorCompany String?
+  authorLogo    String?
+  rating        Int
+  content       String
+  date          String?
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
 }

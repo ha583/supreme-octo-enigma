@@ -110,3 +110,62 @@ export function EventTypeServerSchema(options?: {
     videoCallSoftware: z.string(),
   });
 }
+
+// Portfolio Schemas
+export const organizationSchema = z.object({
+  name: z.string().min(2).max(150),
+  displayName: z.string().max(150).optional(),
+  tagline: z.string().max(200).optional(),
+  description: z.string().optional(),
+  logo: z.string().optional(),
+  coverImage: z.string().optional(),
+  website: z.string().url().optional().or(z.literal("")),
+  location: z.string().max(100).optional(),
+  teamSize: z.string().optional(),
+  phone: z.string().max(20).optional(),
+  country: z.string().max(100).optional(),
+  currency: z.string().max(10).optional(),
+  slug: z.string().min(3).max(100).regex(/^[a-z0-9-]+$/, {
+    message: "Slug must contain only lowercase letters, numbers, and hyphens",
+  }),
+  linkedin: z.string().url().optional().or(z.literal("")),
+  twitter: z.string().url().optional().or(z.literal("")),
+  instagram: z.string().url().optional().or(z.literal("")),
+  facebook: z.string().url().optional().or(z.literal("")),
+});
+
+export const projectSchema = z.object({
+  title: z.string().min(3).max(150),
+  description: z.string().optional(),
+  coverImage: z.string().optional(),
+  images: z.string().optional(), // JSON string of image URLs
+  date: z.string().optional(),
+  isPinned: z.boolean().default(false),
+  isFeatured: z.boolean().default(false),
+  projectUrl: z.string().url().optional().or(z.literal("")),
+  tags: z.string().optional(), // comma-separated
+});
+
+export const serviceSchema = z.object({
+  title: z.string().min(3).max(150),
+  description: z.string().optional(),
+  icon: z.string().optional(),
+  logo: z.string().optional(),
+  banner: z.string().optional(),
+  pricePerHour: z.number().min(0).optional(),
+  sampleWork: z.string().optional(), // JSON string of sample work array
+});
+
+export const clientSchema = z.object({
+  name: z.string().min(2).max(150),
+  logo: z.string().optional(),
+});
+
+export const reviewSchema = z.object({
+  authorName: z.string().min(2).max(150),
+  authorCompany: z.string().max(150).optional(),
+  authorLogo: z.string().optional(),
+  rating: z.number().min(1).max(5),
+  content: z.string().min(10),
+  date: z.string().optional(),
+});

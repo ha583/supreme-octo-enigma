@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CalendarCheck, HomeIcon, Settings, Users2 } from "lucide-react";
+import { CalendarCheck, HomeIcon, Settings, Users2, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -27,6 +27,12 @@ export const dashboardLinks = [
   },
   {
     id: 3,
+    name: "Portfolio",
+    href: "/dashboard/portfolio",
+    icon: Briefcase,
+  },
+  {
+    id: 4,
     name: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
